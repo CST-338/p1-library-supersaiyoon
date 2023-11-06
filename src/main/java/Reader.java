@@ -18,11 +18,22 @@ public class Reader {
     public static final int BOOK_COUNT_ = 3;
     public static final int BOOK_START_ = 4;
 
+    /**
+     * Information about the reader.
+     */
     private int cardNumber;
     private String name;
     private String phone;
     private List<Book> books;
 
+    /**
+     * Constructs a new Reader object with the provided card number, name, and phone number.
+     * Initializes list of books.
+     *
+     * @param cardNumber The unique card number assigned to the reader.
+     * @param name The name of the reader.
+     * @param phone The phone number of the reader.
+     */
     public Reader(int cardNumber, String name, String phone) {
         this.cardNumber = cardNumber;
         this.name = name;
@@ -30,10 +41,23 @@ public class Reader {
         this.books = new ArrayList<>();
     }
 
+    /**
+     * Returns a string representation of the Reader object.
+     *
+     * @return A string containing the reader's name, card number, and a list of checked-out books.
+     */
     public String toString() {
         return name + " (#" + cardNumber + ") has checked out " + books.toString();
     }
 
+    /**
+     * Adds a book to the reader's collection of checked-out books.
+     *
+     * @param book The book to be added to the collection.
+     * @return A {@link Code} indicating the result of the operation:<br>
+     *         - {@link Code#SUCCESS} if the book is successfully added.<br>
+     *         - {@link Code#BOOK_ALREADY_CHECKED_OUT_ERROR} if the book is already in the collection.
+     */
     public Code addBook(Book book) {
         if (books.contains(book)) {
             return Code.BOOK_ALREADY_CHECKED_OUT_ERROR;
@@ -43,6 +67,15 @@ public class Reader {
         return Code.SUCCESS;
     }
 
+    /**
+     * Attempts to remove a book from the reader's collection of checked-out books.
+     *
+     * @param book The book to be removed from the collection.
+     * @return A {@link Code} indicating the result of the removal operation:<br>
+     *         - {@link Code#SUCCESS} if the book is successfully removed.<br>
+     *         - {@link Code#READER_DOESNT_HAVE_BOOK_ERROR} if the reader does not have the book.<br>
+     *         - {@link Code#READER_COULD_NOT_REMOVE_BOOK_ERROR} if any other issue occurs during removal.
+     */
     public Code removeBook(Book book) {
         try {
             if (books.contains(book)) {
@@ -58,16 +91,27 @@ public class Reader {
         }
     }
 
+    /**
+     * Checks if the reader has a specific book in their collection of checked-out books.
+     *
+     * @param book The book to be checked for in the collection.
+     * @return {@code true} if the reader has the specified book; {@code false} otherwise.
+     */
     public boolean hasBook(Book book) {
         return books.contains(book);
     }
 
+    /**
+     * Returns the number of books in the reader's collection of checked-out books.
+     *
+     * @return The count of books in the reader's collection.
+     */
     public int getBookCount() {
         return books.size();
     }
 
     /**
-     * Auto-generated methods below.
+     * Auto-generated setters, getters, equals(), and hashCode() below.
      */
     public int getCardNumber() {
         return cardNumber;
