@@ -23,6 +23,9 @@ public class Book {
     private String author;
     private LocalDate dueDate;
 
+    /**
+     * Everything below was auto-generated.
+     */
     public Book(String isbn, String title, String subject, int pageCount, String author, LocalDate dueDate) {
         this.isbn = isbn;
         this.title = title;
