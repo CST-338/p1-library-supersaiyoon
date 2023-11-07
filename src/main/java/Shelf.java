@@ -66,6 +66,7 @@ public class Shelf {
         else if (book.getSubject().equals(this.subject)) {
             // Book doesn't exist on the shelf but subject matches, add the book with a count of 1.
             books.put(book, 1);
+            System.out.println(book + " added to shelf " + this);
             return Code.SUCCESS;
         }
         else {
@@ -74,9 +75,35 @@ public class Shelf {
         }
     }
 
+    /**
+     * Removes a book from the shelf and updates its count in the HashMap of books.
+     *
+     * @param book The book to remove from the shelf.
+     * @return A code indicating the result of the operation.
+     */
     public Code removeBook(Book book) {
-        System.out.println("removeBook() not implemented yet!");
-        return null;
+        String bookTitle = book.getTitle();
+        String shelfSubject = this.subject;
+
+        if (!books.containsKey(book)) {
+            // Book not stored on this shelf.
+            System.out.println(bookTitle + " is not on shelf " + shelfSubject);
+            return Code.BOOK_NOT_IN_INVENTORY_ERROR;
+        }
+
+        int bookCount = books.get(book);
+        if (bookCount == 0) {
+            // Book is stored on this shelf but 0 quantity.
+            System.out.println("No copies of " + bookTitle + " remain on shelf " + shelfSubject);
+            return Code.BOOK_NOT_IN_INVENTORY_ERROR;
+        }
+
+        // Book is present, and there are more than 0 copies.
+        int newBookCount = bookCount - 1;
+        books.put(book, newBookCount);
+        System.out.println(bookTitle + " successfully removed from shelf " + shelfSubject);
+
+        return Code.SUCCESS;
     }
 
     /**
