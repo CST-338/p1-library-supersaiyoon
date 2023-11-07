@@ -162,9 +162,14 @@ class ShelfTest {
 
     @Test
     void listBooks() {
-        String listBook = "0 book on shelf: 1 : sci-fi";
+        String listBook = "0 books on shelf: 1 : sci-fi";
         shelf.setSubject("sci-fi");
         shelf.setShelfNumber(1);
         assertEquals(listBook.trim(), shelf.listBooks().trim());
+        shelf.addBook(book);
+        listBook = "1 book on shelf: 1 : sci-fi\n";
+        listBook += book.toString() + " 1";
+        assertEquals(listBook.trim(), shelf.listBooks().trim());
+
     }
 }
