@@ -18,7 +18,7 @@ public class Shelf {
     /**
      * Information about shelf and the books it stores.
      */
-    private HashMap<Book, Integer> books;  // Books on this shelf.
+    private HashMap<Book, Integer> books = new HashMap<>();  // Books on this shelf.
     private int shelfNumber;
     private String subject;
 
@@ -145,7 +145,7 @@ public class Shelf {
             String bookAuthor = book.getKey().getAuthor();
             String bookIsbn = book.getKey().getISBN();
             int numBooks = book.getValue();
-            String bookInfo = bookTitle + " by " + bookAuthor + " ISBN:" + bookIsbn + " " + numBooks + "\n";
+            String bookInfo = bookTitle + " by " + bookAuthor + " ISBN: " + bookIsbn + " " + numBooks + "\n";
             bookList.append(bookInfo);
         }
         return bookList.toString();
