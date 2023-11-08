@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @version  1.3.1.
+ */
+
 class LibraryTest {
 
     Library csumb = null;
@@ -31,11 +35,11 @@ class LibraryTest {
     @Test
     void init_test() {
         //Bad file
-        assertEquals(csumb.init("nope.csv"), Code.FILE_NOT_FOUND_ERROR);
-        assertEquals(csumb.init(badBooks0), Code.BOOK_COUNT_ERROR);
-        assertEquals(csumb.init(badBooks1), Code.SHELF_COUNT_ERROR);
-        assertEquals(csumb.init(badShelves0), Code.SHELF_COUNT_ERROR);
-        assertEquals(csumb.init(badShelves1), Code.READER_COUNT_ERROR);
+        assertEquals(Code.FILE_NOT_FOUND_ERROR, csumb.init("nope.csv"));
+        assertEquals(Code.BOOK_COUNT_ERROR, csumb.init(badBooks0));
+        assertEquals(Code.BOOK_COUNT_ERROR, csumb.init(badBooks1) );
+        assertEquals( Code.SHELF_COUNT_ERROR,csumb.init(badShelves0));
+        assertEquals( Code.SHELF_NUMBER_PARSE_ERROR,csumb.init(badShelves1));
 
 
     }
