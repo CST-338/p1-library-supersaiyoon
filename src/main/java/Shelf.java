@@ -24,9 +24,17 @@ public class Shelf {
 
     /**
      * Default constructor for creating a Shelf.
-     * Will be removed in a future version.
+     * Per Shelf.java doc: "The no parameter constructor does nothing
+     * and is a deprecated constructor.  It will be removed in future versions."
      */
     public Shelf() {
+        //--------------------------------------------------------------------------------//
+        // NOTE: 'books' is initialized here because shelfTest.java never calls           //
+        // the parameterized constructor. If this no-parameter constructor is deprecated, //
+        // why is it called from shelfTest? I didn't want to initialize it outside the    //
+        // constructor, so this was the next best place.                                  //
+        //--------------------------------------------------------------------------------//
+        books = new HashMap<>();
     }
 
     /**
@@ -38,7 +46,6 @@ public class Shelf {
     public Shelf(int shelfNumber, String subject) {
         this.shelfNumber = shelfNumber;
         this.subject = subject;
-        books = new HashMap<>();
     }
 
     /**
