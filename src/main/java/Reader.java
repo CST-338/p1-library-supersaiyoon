@@ -111,40 +111,83 @@ public class Reader {
     }
 
     /**
-     * Auto-generated setters, getters, equals(), and hashCode() below.
+     * Retrieves the card number associated with the reader.
+     *
+     * @return An integer representing the card number.
      */
     public int getCardNumber() {
         return cardNumber;
     }
 
+    /**
+     * Sets the card number for the reader.
+     *
+     * @param cardNumber An integer representing the card number to be set.
+     */
     public void setCardNumber(int cardNumber) {
         this.cardNumber = cardNumber;
     }
 
+    /**
+     * Retrieves the name of the reader.
+     *
+     * @return A string representing the name of the reader.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the reader's name.
+     *
+     * @param name A string representing the name to be set for the reader.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Retrieves the reader's phone number.
+     *
+     * @return A string representing the phone number of the reader.
+     */
     public String getPhone() {
         return phone;
     }
 
+    /**
+     * Sets the reader's phone number.
+     *
+     * @param phone A string representing the reader's phone number.
+     */
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
+    /**
+     * Retrieves a List containing information about books checked out by the reader.
+     *
+     * @return A List of Book objects representing the books checked out by the reader.
+     */
     public List<Book> getBooks() {
         return books;
     }
 
+    /**
+     * Sets the list of books checked out by the reader.
+     *
+     * @param books A List representing the books checked out by the reader.
+     */
     public void setBooks(List<Book> books) {
         this.books = books;
     }
 
+    /**
+     * Indicates whether the provided reader is the same as this reader.
+     *
+     * @param o The reader with which to compare.
+     * @return true if this reader has same name, card number, and phone number as the provided reader, false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -157,6 +200,11 @@ public class Reader {
         return getPhone() != null ? getPhone().equals(reader.getPhone()) : reader.getPhone() == null;
     }
 
+    /**
+     * Returns a hash code value for the reader.
+     *
+     * @return An integer representing the hash code for the reader.
+     */
     @Override
     public int hashCode() {
         int result = getCardNumber();
