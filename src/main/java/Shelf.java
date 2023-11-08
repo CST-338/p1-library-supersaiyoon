@@ -18,7 +18,7 @@ public class Shelf {
     /**
      * Information about shelf and the books it stores.
      */
-    private HashMap<Book, Integer> books = new HashMap<>();  // Books on this shelf.
+    private HashMap<Book, Integer> books;  // Books on this shelf.
     private int shelfNumber;
     private String subject;
 
@@ -38,6 +38,7 @@ public class Shelf {
     public Shelf(int shelfNumber, String subject) {
         this.shelfNumber = shelfNumber;
         this.subject = subject;
+        books = new HashMap<>();
     }
 
     /**
