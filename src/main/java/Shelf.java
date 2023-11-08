@@ -1,6 +1,7 @@
 import Utilities.Code;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Part 3 of Library Project. Represents a bookshelf that contains books.
@@ -117,37 +118,100 @@ public class Shelf {
         return (bookCount != null) ? bookCount : -1;
     }
 
+    /**
+     * Generates a formatted list of books and their details on the bookshelf, including the shelf's information.
+     *
+     * @return A string containing information about the books on the shelf, along with shelf number and subject.
+     */
     public String listBooks() {
-        return "listBooks() not implemented yet!";
+        StringBuilder bookList = new StringBuilder();
+
+        // Compute quantity of all books on shelf
+        int numBooksOnShelf = 0;
+        for (int num : books.values()) {
+            numBooksOnShelf += num;
+        }
+
+        // Determine 'book' or 'books' for correct output grammar
+        String bookGrammar = (numBooksOnShelf == 1) ? "book" : "books";
+
+        // Format and generate info about shelf
+        String shelfInfo = numBooksOnShelf + " " + bookGrammar + " on shelf: " + shelfNumber + " : " + subject + "\n";
+        bookList.append(shelfInfo);
+
+        // Generate and format output about each book on shelf then append to bookList
+        for (Map.Entry<Book, Integer> book : books.entrySet()) {
+            String bookTitle = book.getKey().getTitle();
+            String bookAuthor = book.getKey().getAuthor();
+            String bookIsbn = book.getKey().getISBN();
+            int numBooks = book.getValue();
+            String bookInfo = bookTitle + " by " + bookAuthor + " ISBN:" + bookIsbn + " " + numBooks + "\n";
+            bookList.append(bookInfo);
+        }
+        return bookList.toString();
     }
 
     /**
-     * Auto-generated setters, getters, equals(), and hashCode() below.
+     * Retrieves a HashMap containing information about books and their corresponding quantities.
+     *
+     * @return A HashMap where the keys are Book objects, and the values are integers representing the quantities of each book.
      */
     public HashMap<Book, Integer> getBooks() {
         return books;
     }
 
+    /**
+     * Sets the collection of books and their corresponding quantities.
+     *
+     * @param books A HashMap where the keys are Book objects, and the values are integers representing the quantities of each book.
+     */
     public void setBooks(HashMap<Book, Integer> books) {
         this.books = books;
     }
 
+    /**
+     * Retrieves the shelf number of a bookshelf.
+     *
+     * @return An integer representing the shelf number.
+     */
     public int getShelfNumber() {
         return shelfNumber;
     }
 
+    /**
+     * Sets the shelf number for a bookshelf.
+     *
+     * @param shelfNumber An integer representing the shelf number to be set.
+     */
     public void setShelfNumber(int shelfNumber) {
         this.shelfNumber = shelfNumber;
     }
 
+    /**
+     * Retrieves the subject of a book.
+     *
+     * @return A string representing the subject of the book.
+     */
     public String getSubject() {
         return subject;
     }
 
+    /**
+     * Sets the subject of a book.
+     *
+     * @param subject A string representing the subject to be set for the book.
+     */
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
+    /**
+     * Indicates whether the provided bookshelf
+     * has the same shelf number and subject as this bookshelf.
+     *
+     * @param o The shelf with which to compare.
+     * @return true if this shelf has same shelf number and subject as the provided bookshelf, false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -159,6 +223,11 @@ public class Shelf {
         return getSubject() != null ? getSubject().equals(shelf.getSubject()) : shelf.getSubject() == null;
     }
 
+    /**
+     * Returns a hash code value for the bookshelf.
+     *
+     * @return An integer representing the hash code for the bookshelf.
+     */
     @Override
     public int hashCode() {
         int result = getShelfNumber();
