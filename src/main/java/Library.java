@@ -24,65 +24,71 @@ public class Library {
 
   private Code initBooks(int CHANGE_ME1, Scanner CHANGE_ME2) {
     System.out.println("initBooks() not implemented");
-    return null;
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   private Code initReader(int CHANGE_ME1, Scanner CHANGE_ME2) {
     System.out.println("initReader() not implemented");
-    return null;
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   private Code initShelves(int CHANGE_ME1, Scanner CHANGE_ME2) {
     System.out.println("initShelves() not implemented");
-    return null;
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   public Code addBook(Book CHANGE_ME) {
     System.out.println("addBook() not implemented");
-    return null;
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   private Code addBookToShelf(Book CHANGE_ME1, Shelf CHANGE_ME2) {
     System.out.println("addBookToShelf() not implemented");
-    return null;
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   public Code addReader(Reader CHANGE_ME) {
     System.out.println("addReader() not implemented");
-    return null;
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   public Code addShelf(Shelf CHANGE_ME) {
     System.out.println("addShelf(Shelf) not implemented");
-    return null;
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   public Code addShelf(String CHANGE_ME) {
     System.out.println("addShelf(String) not implemented");
-    return null;
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   public Code checkOutBook(Reader CHANGE_ME1, Book CHANGE_ME2) {
-    return null;
+    System.out.println("checkOutBook() not implemented");
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   public static LocalDate convertDate(String CHANGE_ME1, Code CHANGE_ME2) {
+    System.out.println("convertDate() not implemented");
     return null;
   }
 
   public static int convertInt(String CHANGE_ME1, Code CHANGE_ME2) {
+    System.out.println("convertInt() not implemented");
     return -1;
   }
 
   private Code errorCode(int CHANGE_ME) {
-    return null;
+    System.out.println("errorCode() not implemented");
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   public Book getBookByISBN(String CHANGE_ME) {
+    System.out.println("getBookByISBN() not implemented");
     return null;
   }
 
   public static int getLibraryCardNumber() {
+    System.out.println("getLibraryCardNumber() not implemented");
     return -1;
   }
 
@@ -91,46 +97,57 @@ public class Library {
   }
 
   public Reader getReaderByCard(int CHANGE_ME) {
+    System.out.println("getReaderByCard() not implemented");
     return null;
   }
 
   public Shelf getShelf(String CHANGE_ME) {
+    System.out.println("getShelf(String) not implemented");
     return null;
   }
 
   public Shelf getShelf(Integer CHANGE_ME) {
+    System.out.println("getShelf(Integer) not implemented");
     return null;
   }
 
   public int listBooks() {
+    System.out.println("listBooks() not implemented");
     return -1;
   }
 
   public int listReaders() {
+    System.out.println("listReaders() not implemented");
     return -1;
   }
 
   public int listReaders(boolean CHANGE_ME) {
+    System.out.println("listReaders(boolean) not implemented");
     return -1;
   }
 
   public int listShelves(boolean CHANGE_ME) {
+    System.out.println("listShelves(boolean) not implemented");
     return -1;
   }
 
   public int listShelves() {
+    System.out.println("listShelves() not implemented");
     return -1;
   }
 
   public Code removeReader(Reader CHANGE_ME) {
-    return null;
+    System.out.println("removeReader() not implemented");
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   public Code returnBook(Reader CHANGE_ME1, Book CHANGE_ME2) {
-    return null;
+    System.out.println("returnBook() not implemented");
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 
   public Code returnBook(Book CHANGE_ME) {
-    return null;
+    System.out.println("returnBook() not implemented");
+    return Code.NOT_IMPLEMENTED_ERROR;
   }
 }
