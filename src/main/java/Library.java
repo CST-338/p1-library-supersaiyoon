@@ -129,14 +129,63 @@ public class Library {
     return Code.UNKNOWN_ERROR;
   }
 
-  public Code addBook(Book CHANGE_ME) {
-    System.out.println("addBook() not implemented");
-    return Code.NOT_IMPLEMENTED_ERROR;
+  public Code addBook(Book newBook) {
+    if (books.containsKey(newBook)) {
+      // Book already exists in library, increment the count.
+      int newBookCount = books.get(newBook) + 1;
+      String newBookTitle = newBook.getTitle();
+      books.put(newBook, newBookCount);
+      System.out.println(newBookCount + " copies of " + newBookTitle + " in the stacks");
+      return Code.SUCCESS;
+    }
+    else {
+      // Book doesn't exist in library, add it with a count of 1.
+      books.put(newBook, 1);
+
+      // Check if shelf with matching subject exists.
+      String newBookSubject = newBook.getSubject();
+      if (shelves.containsKey(newBookSubject)) {
+        // Add book to shelf with matching subject.
+        Shelf shelf = shelves.get(newBookSubject);
+        addBookToShelf(newBook, shelf);
+        return Code.SUCCESS;
+      }
+      else {
+        // No shelf with matching subject exists, return error.
+        System.out.println("No shelf for " + newBookSubject + " books");
+        return Code.SHELF_EXISTS_ERROR;
+      }
+    }
   }
 
-  private Code addBookToShelf(Book CHANGE_ME1, Shelf CHANGE_ME2) {
-    System.out.println("addBookToShelf() not implemented");
-    return Code.NOT_IMPLEMENTED_ERROR;
+  private Code addBookToShelf(Book book, Shelf shelf) {
+    // Try returning book to shelf with returnBook(Book) method first.
+    Code returnBookCode = returnBook(book);
+    if (returnBookCode == Code.SUCCESS) {
+      // Successfully returned book to shelf.
+      return Code.SUCCESS;
+    }
+
+    // returnBook() was unsuccessful.
+    // Check if book subject matches shelf subject.
+    String bookSubject = book.getSubject();
+    String shelfSubject = shelf.getSubject();
+    if (!bookSubject.equals(shelfSubject)) {
+      return Code.SHELF_SUBJECT_MISMATCH_ERROR;
+    }
+
+    // Book subject matches shelf subject, add book to shelf.
+    Code addBookToShelfCode = shelf.addBook(book);
+    if (addBookToShelfCode == Code.SUCCESS) {
+      // Successfully added book to shelf.
+      System.out.println(book + "added to shelf");
+      return Code.SUCCESS;
+    }
+    else {
+      // Shelf.addBook() returned an error.
+      System.out.println("Could not add " + book + " to shelf");
+      return addBookToShelfCode;
+    }
   }
 
   public Code addReader(Reader CHANGE_ME) {
@@ -294,9 +343,21 @@ public class Library {
     return Code.NOT_IMPLEMENTED_ERROR;
   }
 
-  public Code returnBook(Book CHANGE_ME) {
-    System.out.println("returnBook() not implemented");
-    return Code.NOT_IMPLEMENTED_ERROR;
+  public Code returnBook(Book book) {
+    String bookSubject = book.getSubject();
+
+    // Check for shelf with matching subject.
+    if (shelves.containsKey(bookSubject)) {
+      // Shelf with matching subject exists, add book to shelf.
+      Shelf shelf = shelves.get(bookSubject);
+      shelf.addBook(book);
+      return Code.SUCCESS;
+    }
+    else {
+      // No shelf with matching subject exists, return error.
+      System.out.println("No shelf for " + book);
+      return Code.SHELF_EXISTS_ERROR;
+    }
   }
 
   /**
