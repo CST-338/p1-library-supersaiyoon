@@ -17,6 +17,9 @@ public class Library {
 
   public Library(String name) {
     this.name = name;
+    books = new HashMap<>();
+    readers = new ArrayList<>();
+    shelves = new HashMap<>();
   }
 
   public Code init(String filename) {
@@ -32,7 +35,7 @@ public class Library {
       return Code.FILE_NOT_FOUND_ERROR;
     }
 
-    String line = null;
+    String line;
     try {
       // This line should be the number of books.
       line = fileScanner.nextLine();
@@ -51,16 +54,28 @@ public class Library {
       return getCodeByNumber(recordCount);
     }
 
-    initBooks(recordCount, fileScanner);
+    // Parse books, shelves, and readers.
+    // If any of init methods does NOT return Code.SUCCESS, return error code.
+    Code initBooksCode = initBooks(recordCount, fileScanner);
+    if (initBooksCode != Code.SUCCESS) {
+      return initBooksCode;
+    }
     listBooks();
 
-    initShelves(recordCount, fileScanner);
+    Code initShelvesCode = initShelves(recordCount, fileScanner);
+    if (initShelvesCode != Code.SUCCESS) {
+      return initShelvesCode;
+    }
     listShelves();
 
-    initReader(recordCount, fileScanner);
+    Code initReaderCode = initReader(recordCount, fileScanner);
+    if (initReaderCode != Code.SUCCESS) {
+      return initReaderCode;
+    }
     listReaders();
 
-    return Code.FILE_NOT_FOUND_ERROR;
+    // File parsed successfully.
+    return Code.SUCCESS;
   }
 
   private Code initBooks(int bookCount, Scanner scan) {
@@ -130,10 +145,12 @@ public class Library {
   }
 
   public Code addBook(Book newBook) {
+    // Get book title here because it's needed in multiple places.
+    String newBookTitle = newBook.getTitle();
+
     if (books.containsKey(newBook)) {
       // Book already exists in library, increment the count.
       int newBookCount = books.get(newBook) + 1;
-      String newBookTitle = newBook.getTitle();
       books.put(newBook, newBookCount);
       System.out.println(newBookCount + " copies of " + newBookTitle + " in the stacks");
       return Code.SUCCESS;
@@ -141,6 +158,7 @@ public class Library {
     else {
       // Book doesn't exist in library, add it with a count of 1.
       books.put(newBook, 1);
+      System.out.println(newBookTitle + " added to the stacks");
 
       // Check if shelf with matching subject exists.
       String newBookSubject = newBook.getSubject();
@@ -309,8 +327,23 @@ public class Library {
   }
 
   public int listBooks() {
-    System.out.println("listBooks() not implemented");
-    return -1;
+    int totalBooks = 0;
+    int numCopies;
+    String bookTitle;
+    String bookAuthor;
+    String bookIsbn;
+
+    // List all books at library, even those not on shelves.
+    for (Book book : books.keySet()) {
+      numCopies = books.get(book);
+      bookTitle = book.getTitle();
+      bookAuthor = book.getAuthor();
+      bookIsbn = book.getISBN();
+
+      System.out.println(numCopies + " copies of " + bookTitle + " by " + bookAuthor + " ISBN:" + bookIsbn);
+      totalBooks += numCopies;
+    }
+    return totalBooks;
   }
 
   public int listReaders() {
