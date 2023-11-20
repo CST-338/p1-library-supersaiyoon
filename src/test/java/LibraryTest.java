@@ -3,6 +3,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -118,9 +120,29 @@ class LibraryTest {
 
     @Test
     void convertDate() {
+        LocalDate defaultDate = LocalDate.of(1970, 1, 1);
+        Code defaultCode = Code.UNKNOWN_ERROR;  // Code object isn't used anymore but still required as parameter.
+
+        // Test date "0000".
+        assertEquals(defaultDate, Library.convertDate("0000", defaultCode));
+
+        // Test incomplete date that doesn't split into 3 parts on '-'.
+        assertEquals(defaultDate, Library.convertDate("2020", defaultCode));
+        assertEquals(defaultDate, Library.convertDate("2020-01", defaultCode));
+        assertEquals(defaultDate, Library.convertDate("2020-08-13-25", defaultCode));
+
+        // TODO: Date with year, month, or day < 0
+        // assertEquals(defaultDate, Library.convertDate("-2020-08-13", defaultCode));
+
+        // No errors
+        LocalDate date = LocalDate.of(2023, 11, 19);
+        assertEquals(date, Library.convertDate("2023-11-19", defaultCode));
     }
 
     @Test
     void getLibraryCardNumber() {
+        // TODO: Library card number is 1 greater than the previous card number
+
+        // TODO: Failed incrementation
     }
 }
