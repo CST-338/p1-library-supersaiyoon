@@ -2,10 +2,7 @@ import Utilities.Code;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Part 4 of Library Project. Represents a library that contains readers, shelves, and books.
@@ -224,9 +221,10 @@ public class Library {
 
         Book book = getBookByISBN(isbn);
 
-        // Book doesn't exist in library. Print message and continue parsing.
+        // Book doesn't exist in library. Print message, skip book, and continue parsing.
         if (book == null) {
           System.out.println("ERROR");
+          currBookCount++;
           continue;
         }
 
@@ -365,6 +363,19 @@ public class Library {
     // Assign new shelf number to shelf then add to shelves.
     shelf.setShelfNumber(nextShelfNumber);
     shelves.put(shelfSubject, shelf);
+
+    // Add all books with matching subjects to new shelf.
+    for (Map.Entry<Book, Integer> entry : books.entrySet()) {
+      Book book = entry.getKey();
+      String bookSubject = entry.getKey().getSubject();
+      Integer numCopies = entry.getValue();
+      if (bookSubject.equals(shelfSubject)) {
+        // Need to add multiple copies of same book.
+        for (int i = 0; i < numCopies; i++) {
+          addBookToShelf(book, shelf);
+        }
+      }
+    }
     return Code.SUCCESS;
   }
 
@@ -583,9 +594,24 @@ public class Library {
     return numReaders;
   }
 
-  public int listReaders(boolean CHANGE_ME) {
-    System.out.println("listReaders(boolean) not implemented");
-    return -1;
+  public int listReaders(boolean showBooks) {
+    int numReaders = 0;
+
+    if (showBooks) {
+      for (Reader reader : readers) {
+        String readerOutput = reader.toString();
+        System.out.println(readerOutput);
+        numReaders++;
+      }
+    }
+    else {
+      for (Reader reader : readers) {
+        System.out.println(reader.toString());
+        numReaders++;
+      }
+    }
+
+    return numReaders;
   }
 
   public int listShelves(boolean showBooks) {
@@ -616,9 +642,33 @@ public class Library {
     return Code.NOT_IMPLEMENTED_ERROR;
   }
 
-  public Code returnBook(Reader CHANGE_ME1, Book CHANGE_ME2) {
-    System.out.println("returnBook() not implemented");
-    return Code.NOT_IMPLEMENTED_ERROR;
+  public Code returnBook(Reader reader, Book book) {
+    String readerName = reader.getName();
+
+    // Reader does not have book in their list.
+    if (!reader.hasBook(book)) {
+      String bookTitle = book.getTitle();
+      System.out.println(readerName + " doesn't have " + bookTitle + " checked out");
+      return Code.READER_DOESNT_HAVE_BOOK_ERROR;
+    }
+
+    // Verify book exists in library.
+    if (!books.containsKey(book)) {
+      return Code.BOOK_NOT_IN_INVENTORY_ERROR;
+    }
+
+    // Book exists in library, remove book from reader.
+    System.out.println(readerName + " is returning " + book);
+    Code removeBookCode = reader.removeBook(book);
+
+    // Book removed from reader, return book to shelf.
+    if (removeBookCode == Code.SUCCESS) {
+      return returnBook(book);
+    }
+    else {
+      System.out.println("Could not return " + book);
+      return removeBookCode;
+    }
   }
 
   public Code returnBook(Book book) {
