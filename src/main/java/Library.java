@@ -7,6 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Part 4 of Library Project. Represents a library that contains readers, shelves, and books.
+ * Performs functions like a real library such as checking out books, storing books on shelves, and more.
+ * @author Brian Yoon
+ * @since 2023-11-18
+ */
 public class Library {
   public static final int LENDING_LIMIT = 5;  // Maximum number of books a reader can check out at a time.
   private HashMap<Book, Integer> books;       // Contains Book objects registered to library and count of the books.
@@ -104,7 +110,7 @@ public class Library {
       int splitLineLength = splitLine.length;
       if (splitLineLength != numFields) {
         System.out.println("Expected " + numFields + " fields, found " + splitLineLength);
-        return Code.BOOK_RECORD_COUNT_ERROR;
+        return Code.BOOK_COUNT_ERROR;  // Following unit test output per Dr. C.
       }
 
       // Safe to assume there are six fields at this point.
