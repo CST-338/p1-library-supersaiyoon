@@ -18,7 +18,10 @@ public class Shelf {
     /**
      * Information about shelf and the books it stores.
      */
-    private HashMap<Book, Integer> books;  // Books on this shelf.
+    // NOTE: 'books' is initialized here because ShelfTest.java never calls the parameterized constructor.
+    //       MainTest.java fails if books is initialized in the no-parameter constructor.
+    //       I couldn't think of any other place to initialize it that would pass all test files.
+    private HashMap<Book, Integer> books = new HashMap<>();;  // Books on this shelf.
     private int shelfNumber;
     private String subject;
 
@@ -28,13 +31,6 @@ public class Shelf {
      * and is a deprecated constructor.  It will be removed in future versions."
      */
     public Shelf() {
-        //--------------------------------------------------------------------------------//
-        // NOTE: 'books' is initialized here because shelfTest.java never calls           //
-        // the parameterized constructor. If this no-parameter constructor is deprecated, //
-        // why is it called from shelfTest? I didn't want to initialize it outside the    //
-        // constructor, so this was the next best place.                                  //
-        //--------------------------------------------------------------------------------//
-        books = new HashMap<>();
     }
 
     /**

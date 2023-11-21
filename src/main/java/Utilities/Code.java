@@ -14,6 +14,7 @@ public enum Code {
     BOOK_ALREADY_CHECKED_OUT_ERROR(-21, "Book already checked out error"),
     BOOK_LIMIT_REACHED_ERROR(-22, "Book limit reached"),
     BOOK_NOT_IN_INVENTORY_ERROR(-23, "book not in stacks or library"),
+    BOOK_RECORD_COUNT_ERROR(-24, "The count of records for the book doesn't make sense"),
     READER_COUNT_ERROR(-4, "Reader Count Error"),
     READER_CARD_NUMBER_ERROR(-41, "Reader Card number error"),
     READER_PHONE_NUMBER_ERROR(-43,"Reader Phone number error"),
