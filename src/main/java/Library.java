@@ -11,13 +11,41 @@ import java.util.*;
  * @since 2023-11-18
  */
 public class Library {
-  public static final int LENDING_LIMIT = 5;  // Maximum number of books a reader can check out at a time.
-  private HashMap<Book, Integer> books;       // Contains Book objects registered to library and count of the books.
-  private static int libraryCard;             // Current max library card number.
-  private String name;                        // Name of library.
-  private List<Reader> readers;               // List of readers registered to library.
-  private HashMap<String, Shelf> shelves;     // Contains shelf subject (String) and Shelf object.
+  /**
+   * Maximum number of books a reader can check out at a time.
+   */
+  public static final int LENDING_LIMIT = 5;
 
+  /**
+   * Contains Book objects registered to the library and the count of each book.
+   */
+  private HashMap<Book, Integer> books;
+
+  /**
+   * Current maximum library card number. Initializes with '0'.
+   */
+  private static int libraryCard;
+
+  /**
+   * Name of the library.
+   */
+  private String name;
+
+  /**
+   * List of readers registered to the library.
+   */
+  private List<Reader> readers;
+
+  /**
+   * Contains shelf subject (String) and Shelf object.
+   */
+  private HashMap<String, Shelf> shelves;
+
+  /**
+   * Constructor for creating a new library with the specified name.
+   *
+   * @param name The name of the library.
+   */
   public Library(String name) {
     this.name = name;
     books = new HashMap<>();
@@ -25,6 +53,15 @@ public class Library {
     shelves = new HashMap<>();
   }
 
+  /**
+   * Initializes the library with data from the specified file.
+   *
+   * @param filename The name of the file containing information on books, shelves, and readers.
+   * @return A {@code Code} object indicating the success or failure of the initialization.<br>
+   *         Returns {@code Code.SUCCESS} if initialization is successful.<br>
+   *         Returns {@code Code.FILE_NOT_FOUND_ERROR} if the specified file is not found.<br>
+   *         Returns other error codes for various initialization failures.
+   */
   public Code init(String filename) {
     File file = new File(filename);
     Scanner fileScanner;
@@ -92,6 +129,19 @@ public class Library {
     return Code.SUCCESS;
   }
 
+  /**
+   * Initializes the books in the library with the specified number of books contained in the given {@code Scanner}.
+   *
+   * @param bookCount The number of books to initialize in the library.
+   * @param scan      The Scanner object containing the book data.
+   * @return A {@code Code} object indicating the success or failure of the initialization.<br>
+   *         Returns {@code Code.SUCCESS} if initialization is successful.<br>
+   *         Returns {@code Code.LIBRARY_ERROR} if the book count is less than 1.<br>
+   *         Returns {@code Code.BOOK_COUNT_ERROR} if the input data for a book has an unexpected number of fields.<br>
+   *         Returns {@code Code.PAGE_COUNT_ERROR} if the page count of a book is not a positive integer.<br>
+   *         Returns {@code Code.DUE_DATE_ERROR} if the due date of a book cannot be converted to LocalDate.<br>
+   *         Returns {@code Code.DATE_CONVERSION_ERROR} if there is an error converting the due date to LocalDate.
+   */
   private Code initBooks(int bookCount, Scanner scan) {
     if (bookCount < 1) {
       return Code.LIBRARY_ERROR;
@@ -137,6 +187,17 @@ public class Library {
     return Code.SUCCESS;
   }
 
+  /**
+   * Initializes the shelves in the library with the specified number of shelves contained in the given {@code Scanner}.
+   *
+   * @param shelfCount The number of shelves to initialize in the library.
+   * @param scan       The Scanner object containing the shelf data.
+   * @return A {@code Code} object indicating the success or failure of the initialization.<br>
+   *         Returns {@code Code.SUCCESS} if initialization is successful.<br>
+   *         Returns {@code Code.SHELF_COUNT_ERROR} if the shelf count is less than 1.<br>
+   *         Returns {@code Code.SHELF_NUMBER_PARSE_ERROR} if the input data for a shelf has an unexpected number of fields
+   *         or if the shelf number cannot be converted to a positive integer.
+   */
   private Code initShelves(int shelfCount, Scanner scan) {
     if (shelfCount < 1) {
       return Code.SHELF_COUNT_ERROR;
@@ -177,6 +238,18 @@ public class Library {
     return Code.SUCCESS;
   }
 
+  /**
+   * Initializes the readers registered with the library with the specified number of readers contained in the given {@code Scanner}.
+   *
+   * @param readerCount The number of readers to initialize in the library.
+   * @param scan        The Scanner object containing the reader data.
+   * @return A Code object indicating the success or failure of the initialization.<br>
+   *         Returns {@code Code.SUCCESS} if initialization is successful.<br>
+   *         Returns {@code Code.READER_COUNT_ERROR} if the reader count is less than or equal to 0.<br>
+   *         Returns {@code Code.READER_CARD_NUMBER_ERROR} if the card number of a reader cannot be converted to a positive integer.<br>
+   *         Returns {@code Code.UNKNOWN_ERROR} if there is an error converting the book count to an integer or for other unknown errors.<br>
+   *         Returns {@code Code.DATE_CONVERSION_ERROR} if there is an error converting the due date to LocalDate.
+   */
   private Code initReader(int readerCount, Scanner scan) {
     if (readerCount <= 0) {
       return Code.READER_COUNT_ERROR;
@@ -240,6 +313,13 @@ public class Library {
     return Code.SUCCESS;
   }
 
+  /**
+   * Retrieves the Code object associated with the specified code number.
+   *
+   * @param codeNumber The numeric value of the Code object to retrieve.
+   * @return The Code object corresponding to the given codeNumber.<br>
+   *         Returns {@code Code.UNKNOWN_ERROR} if no Code object is found with the specified codeNumber.
+   */
   private Code getCodeByNumber(int codeNumber) {
     // Find Code object with corresponding codeNumber.
     for (Code code : Code.values()) {
@@ -251,6 +331,14 @@ public class Library {
     return Code.UNKNOWN_ERROR;
   }
 
+  /**
+   * Adds a new book to the library or increments the count if the book already exists.
+   *
+   * @param newBook The Book object to be added to the library.
+   * @return A Code object indicating the success or failure of the addition.<br>
+   *         Returns {@code Code.SUCCESS} if the book is successfully added or its count is incremented.<br>
+   *         Returns {@code Code.SHELF_EXISTS_ERROR} if no shelf with a matching subject exists.
+   */
   public Code addBook(Book newBook) {
     // Get book title here because it's needed in multiple places.
     String newBookTitle = newBook.getTitle();
@@ -283,6 +371,16 @@ public class Library {
     }
   }
 
+  /**
+   * Adds/returns a book to the specified shelf.
+   *
+   * @param book  The Book object to be added/returned to the shelf.
+   * @param shelf The Shelf object to which the book is to be added/returned.
+   * @return A Code object indicating the success or failure of the operation.<br>
+   *         Returns {@code Code.SUCCESS} if the book is successfully added/returned to the shelf.<br>
+   *         Returns {@code Code.SHELF_SUBJECT_MISMATCH_ERROR} if the book subject does not match the shelf subject.<br>
+   *         Returns the error code returned by the {@code Shelf.addBook} method if it encounters an error.
+   */
   private Code addBookToShelf(Book book, Shelf shelf) {
     // Try returning book to shelf with returnBook(Book) method first.
     Code returnBookCode = returnBook(book);
@@ -313,6 +411,15 @@ public class Library {
     }
   }
 
+  /**
+   * Adds a new reader to the library.
+   *
+   * @param reader The Reader object to be added to the library.
+   * @return A Code object indicating the success or failure of the addition.<br>
+   *         Returns {@code Code.SUCCESS} if the reader is successfully added.<br>
+   *         Returns {@code Code.READER_ALREADY_EXISTS_ERROR} if a reader with the same information already exists.<br>
+   *         Returns {@code Code.READER_CARD_NUMBER_ERROR} if a reader with the same card number already exists.
+   */
   public Code addReader(Reader reader) {
     // Reader already exists
     if (readers.contains(reader)) {
@@ -324,6 +431,7 @@ public class Library {
     String readerName = reader.getName();
     int readerCardNumber = reader.getCardNumber();
     Reader readerWithSameCardNumber = getReaderByCard(readerCardNumber);
+
     if (readerWithSameCardNumber != null) {
       // Reader with same card number exists.
       String readerWithSameCardNumberName = readerWithSameCardNumber.getName();
@@ -340,6 +448,15 @@ public class Library {
     return Code.SUCCESS;
   }
 
+  /**
+   * Adds a new shelf to the library and adds any books (not on a shelf)
+   * with the matching subject to the shelf.
+   *
+   * @param shelf The Shelf object to be added to the library.
+   * @return A Code object indicating the success or failure of the addition.<br>
+   *         Returns {@code Code.SUCCESS} if the shelf is successfully added.<br>
+   *         Returns {@code Code.SHELF_EXISTS_ERROR} if a shelf with the same subject already exists.
+   */
   public Code addShelf(Shelf shelf) {
     String shelfSubject = shelf.getSubject();
     if (shelves.containsKey(shelfSubject)) {
@@ -379,12 +496,33 @@ public class Library {
     return Code.SUCCESS;
   }
 
+  /**
+   * Adds a new shelf to the library with the specified subject.
+   *
+   * @param shelfSubject The subject of the new shelf.
+   * @return A Code object resulting from the call of addShelf(Shelf).<br>
+   *         Returns {@code Code.SUCCESS} if the shelf is successfully added.<br>
+   *         Returns {@code Code.SHELF_EXISTS_ERROR} if a shelf with the same subject already exists.
+   */
   public Code addShelf(String shelfSubject) {
     int shelfNumber = shelves.size() + 1;
     Shelf shelf = new Shelf(shelfNumber, shelfSubject);
     return addShelf(shelf);
   }
 
+  /**
+   * Checks out a book to the specified reader.
+   *
+   * @param reader The Reader object to whom the book is checked out.
+   * @param book   The Book object to be checked out.
+   * @return A Code object indicating the success or failure of the checkout.<br>
+   *         Returns {@code Code.SUCCESS} if the book is successfully checked out.<br>
+   *         Returns {@code Code.READER_NOT_IN_LIBRARY_ERROR} if the specified reader does not have an account with the library.<br>
+   *         Returns {@code Code.BOOK_LIMIT_REACHED_ERROR} if the reader has reached the lending limit.<br>
+   *         Returns {@code Code.BOOK_NOT_IN_INVENTORY_ERROR} if the specified book is not in the library's inventory or there are no copies on the shelf.<br>
+   *         Returns the error code returned by the Reader.addBook method if there is an error adding the book to the reader.<br>
+   *         Returns the error code returned by the Shelf.removeBook method if there is an error removing the book from the shelf.
+   */
   public Code checkOutBook(Reader reader, Book book) {
     String readerName = reader.getName();
     // Check if reader has account with library.
@@ -435,6 +573,17 @@ public class Library {
     }
   }
 
+  /**
+   * Converts a date string to a LocalDate object.
+   *
+   * @param date      The date string to be converted.
+   * @param errorCode The Code object to be returned in case of conversion errors. This is no longer used for the project.
+   * @return A LocalDate object representing the converted date.<br>
+   *         Returns {@code LocalDate.of(1970, 1, 1)} if the input date string is "0000".<br>
+   *         Returns {@code LocalDate.of(1970, 1, 1)} if the date string cannot be split into three elements on a '-' character.<br>
+   *         Returns {@code LocalDate.of(1970, 1, 1)} if there are errors converting the date values to integers or if any converted value is less than 0.<br>
+   *         Returns a LocalDate object set to the parsed date values if there are no errors.
+   */
   public static LocalDate convertDate(String date, Code errorCode) {
     LocalDate defaultDate = LocalDate.of(1970, 1, 1);
     // If date string is "0000", return LocalDate set to 01-Jan-1970.
@@ -471,8 +620,17 @@ public class Library {
     return LocalDate.of(year, month, day);
   }
 
+  /**
+   * Converts a string to an integer.
+   *
+   * @param recordCountString The string to be converted to an integer.
+   * @param code              The Code object to be returned in case of conversion errors.
+   * @return An integer value representing the converted string.<br>
+   *         Returns the converted integer value if there are no errors.<br>
+   *         Returns the code number associated with the provided Code object and prints an error message in case of conversion errors.
+   */
   public static int convertInt(String recordCountString, Code code) {
-    int recordCount = -1;
+    int recordCount;
 
     try {
       recordCount = Integer.parseInt(recordCountString);
@@ -502,6 +660,13 @@ public class Library {
     }
   }
 
+  /**
+   * Deprecated: This method is to be removed in the future. It is not used in the current program.
+   *
+   * @param codeNumber The numeric value of the Code object to retrieve.
+   * @return The Code object associated with the specified code number.<br>
+   *         Returns {@code Code.UNKNOWN_ERROR} if no Code object is found with the specified code number.
+   */
   private Code errorCode(int codeNumber) {
     for (Code code : Code.values()) {
       if (code.getCode() == codeNumber) {
@@ -511,6 +676,13 @@ public class Library {
     return Code.UNKNOWN_ERROR;
   }
 
+  /**
+   * Retrieves a Book object with the specified ISBN from the library's inventory.
+   *
+   * @param isbn The ISBN of the book to retrieve.
+   * @return The Book object with the specified ISBN.<br>
+   *         Returns {@code null} if no book with the specified ISBN is found in the library's inventory.
+   */
   public Book getBookByISBN(String isbn) {
     for (Book book : books.keySet()) {
       if (book.getISBN().equals(isbn)) {
@@ -523,10 +695,22 @@ public class Library {
     return null;
   }
 
+  /**
+   * Gets the next available library card number.
+   *
+   * @return The next available library card number.
+   */
   public static int getLibraryCardNumber() {
     return libraryCard + 1;
   }
 
+  /**
+   * Retrieves a Reader object with the specified card number from the library.
+   *
+   * @param cardNumber The card number of the reader to retrieve.
+   * @return The Reader object with the specified card number.<br>
+   *         Returns {@code null} if no reader with the specified card number is found.
+   */
   public Reader getReaderByCard(int cardNumber) {
     for (Reader reader : readers) {
       if (reader.getCardNumber() == cardNumber) {
@@ -539,6 +723,13 @@ public class Library {
     return null;
   }
 
+  /**
+   * Retrieves a Shelf object with the specified subject from the library.
+   *
+   * @param subject The subject of the shelf to retrieve.
+   * @return The Shelf object with the specified subject.<br>
+   *         Returns {@code null} if no shelf with the specified subject is found.
+   */
   public Shelf getShelf(String subject) {
     for (Shelf shelf : shelves.values()) {
       if (shelf.getSubject().equals(subject)) {
@@ -551,6 +742,13 @@ public class Library {
     return null;
   }
 
+  /**
+   * Retrieves a Shelf object with the specified shelf number from the library.
+   *
+   * @param shelfNumber The shelf number of the shelf to retrieve.
+   * @return The Shelf object with the specified shelf number.<br>
+   *         Returns {@code null} if no shelf with the specified shelf number is found.
+   */
   public Shelf getShelf(Integer shelfNumber) {
     for (Shelf shelf : shelves.values()) {
       if (shelf.getShelfNumber() == shelfNumber) {
@@ -563,6 +761,11 @@ public class Library {
     return null;
   }
 
+  /**
+   * Lists all books in the library, including those not on shelves.
+   *
+   * @return The total number of books in the library.
+   */
   public int listBooks() {
     int totalBooks = 0;
     int numCopies;
@@ -583,6 +786,11 @@ public class Library {
     return totalBooks;
   }
 
+  /**
+   * Lists all readers in the library.
+   *
+   * @return The total number of readers in the library.
+   */
   public int listReaders() {
     int numReaders = 0;
 
@@ -594,26 +802,33 @@ public class Library {
     return numReaders;
   }
 
+  /**
+   * Lists all readers in the library, optionally showing the books checked out by each reader.
+   *
+   * @param showBooks If true, displays the information of each reader along with the books they have checked out.<br>
+   *                  If false, displays the string representation of the {@code readers} collection.
+   * @return The total number of readers in the library.
+   */
   public int listReaders(boolean showBooks) {
-    int numReaders = 0;
-
     if (showBooks) {
       for (Reader reader : readers) {
-        String readerOutput = reader.toString();
-        System.out.println(readerOutput);
-        numReaders++;
+        System.out.println(reader.toString());
       }
     }
     else {
-      for (Reader reader : readers) {
-        System.out.println(reader.toString());
-        numReaders++;
-      }
+      System.out.println(readers.toString());
     }
 
-    return numReaders;
+    return readers.size();
   }
 
+  /**
+   * Lists all shelves in the library, optionally showing the books on each shelf.
+   *
+   * @param showBooks If true, lists the books on each shelf.<br>
+   *                  If false, only lists shelf number and subject for each shelf without showing the books.
+   * @return The total number of shelves in the library.
+   */
   public int listShelves(boolean showBooks) {
     int numShelves = 0;
     // If showBooks is true, list books on each shelf.
@@ -623,7 +838,7 @@ public class Library {
         numShelves++;
       }
     }
-    // If showBooks is false, list shelf information only.
+    // If showBooks is false, list shelf number and subject only.
     else {
       for (Shelf shelf : shelves.values()) {
         System.out.println(shelf.toString());
@@ -633,15 +848,55 @@ public class Library {
     return numShelves;
   }
 
+  /**
+   * Lists all shelves in the library, displaying only shelf number and subject of each shelf.
+   *
+   * @return The total number of shelves in the library.
+   */
   public int listShelves() {
     return listShelves(false);
   }
 
-  public Code removeReader(Reader CHANGE_ME) {
-    System.out.println("removeReader() not implemented");
-    return Code.NOT_IMPLEMENTED_ERROR;
+  /**
+   * Removes a reader from the library.
+   *
+   * @param reader The Reader object to be removed.
+   * @return A Code object indicating the success or failure of the removal.<br>
+   *         Returns {@code Code.SUCCESS} if the reader is successfully removed.<br>
+   *         Returns {@code Code.READER_STILL_HAS_BOOKS_ERROR} if the reader still has books checked out and must return all books before removal.<br>
+   *         Returns {@code Code.READER_NOT_IN_LIBRARY_ERROR} if the specified reader is not part of the library.
+   */
+  public Code removeReader(Reader reader) {
+    String readerName = reader.getName();
+    // Check if reader still has books checked out.
+    boolean readerHasBooks = !reader.getBooks().isEmpty();
+    if (readerHasBooks) {
+      System.out.println(readerName + " must return all books!");
+      return Code.READER_STILL_HAS_BOOKS_ERROR;
+    }
+
+    // Check if reader exists in library list of readers.
+    if (!readers.contains(reader)) {
+      System.out.println(readerName + " is not part of this library.");
+      return Code.READER_NOT_IN_LIBRARY_ERROR;
+    }
+
+    // Reader exists in library and has no books checked out.
+    readers.remove(reader);
+    return Code.SUCCESS;
   }
 
+  /**
+   * Returns a book to the library, removing it from the specified reader's list of checked-out books.
+   *
+   * @param reader The Reader object returning the book.
+   * @param book   The Book object to be returned.
+   * @return A Code object indicating the success or failure of the return.<br>
+   *         Returns {@code Code.SUCCESS} if the book is successfully returned to a shelf.<br>
+   *         Returns {@code Code.READER_DOESNT_HAVE_BOOK_ERROR} if the specified reader does not have the book checked out.<br>
+   *         Returns {@code Code.BOOK_NOT_IN_INVENTORY_ERROR} if the book is not found in the library's inventory.<br>
+   *         Prints an error message if the book cannot be returned and returns the associated code.
+   */
   public Code returnBook(Reader reader, Book book) {
     String readerName = reader.getName();
 
@@ -671,6 +926,15 @@ public class Library {
     }
   }
 
+  /**
+   * Returns a book to the library, adding it back to the shelf with matching subject.
+   *
+   * @param book The Book object to be returned.
+   * @return A Code object indicating the success or failure of the return.<br>
+   *         Returns {@code Code.SUCCESS} if the book is successfully returned.<br>
+   *         Returns {@code Code.SHELF_EXISTS_ERROR} if there is no shelf with a matching subject for the book.<br>
+   *         Prints an error message if the book cannot be returned and returns the associated code.
+   */
   public Code returnBook(Book book) {
     String bookSubject = book.getSubject();
 
@@ -689,7 +953,7 @@ public class Library {
   }
 
   /**
-   * Getters and setters auto-generated by IntelliJ.
+   * Getters and setters auto-generated by IntelliJ. Individual Javadoc comments not required per Dr. C.
    */
   public HashMap<Book, Integer> getBooks() {
     return books;
