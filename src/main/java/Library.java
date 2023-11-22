@@ -602,9 +602,9 @@ public class Library {
     }
 
     // Convert date values to int to verify they are valid.
-    int year = Integer.parseInt(splitDate[0]);
-    int month = Integer.parseInt(splitDate[1]);
-    int day = Integer.parseInt(splitDate[2]);
+    int year = convertInt(splitDate[0], Code.DATE_CONVERSION_ERROR);
+    int month = convertInt(splitDate[1], Code.DATE_CONVERSION_ERROR);
+    int day = convertInt(splitDate[2], Code.DATE_CONVERSION_ERROR);
 
     // If any of converted values from split String are less than 0,
     // print message and return LocalDate object set to 01-jan-1970.
