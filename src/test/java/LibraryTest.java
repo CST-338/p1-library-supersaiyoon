@@ -181,7 +181,7 @@ class LibraryTest {
         assertEquals(hitchhikersBook, csumb.getBookByISBN("42-w-87"));
 
         // Book doesn't exist in library.
-        assertEquals(null, csumb.getBookByISBN("0000"));
+        assertNull(csumb.getBookByISBN("0000"));
     }
 
     @Test
@@ -232,7 +232,7 @@ class LibraryTest {
         assertEquals(sciFiShelf, csumb.getShelf("sci-fi"));
 
         // Shelf doesn't exist.
-        assertEquals(null, csumb.getShelf("Romance"));
+        assertNull(csumb.getShelf("Romance"));
     }
 
     @Test
@@ -246,7 +246,7 @@ class LibraryTest {
         assertEquals(sciFiShelf, csumb.getShelf(1));
 
         // Shelf doesn't exist.
-        assertEquals(null, csumb.getShelf(99));
+        assertNull(csumb.getShelf(99));
 
     }
 
@@ -280,7 +280,7 @@ class LibraryTest {
         assertEquals(drew, csumb.getReaderByCard(1));
 
         // Reader doesn't exist.
-        assertEquals(null, csumb.getReaderByCard(99));
+        assertNull(csumb.getReaderByCard(99));
     }
 
     @Test
