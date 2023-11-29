@@ -18,19 +18,20 @@ public class Shelf {
     /**
      * Information about shelf and the books it stores.
      */
-    // NOTE: 'books' is initialized here because ShelfTest.java never calls the parameterized constructor.
-    //       MainTest.java fails if books is initialized in the no-parameter constructor.
-    //       I couldn't think of any other place to initialize it that would pass all test files.
-    private HashMap<Book, Integer> books = new HashMap<>();;  // Books on this shelf.
+    private HashMap<Book, Integer> books;  // Books on this shelf.
     private int shelfNumber;
     private String subject;
 
     /**
-     * Default constructor for creating a Shelf.
+     * Default constructor for creating a Shelf.<br>
      * Per Shelf.java doc: "The no parameter constructor does nothing
-     * and is a deprecated constructor.  It will be removed in future versions."
+     * and is a deprecated constructor.  It will be removed in future versions."<br>
+     * However, the parameterized constructor is called here because
+     * {@code ShelfTest.java} never calls the parameterized constructor.
+     * {@code MainTest.java} fails if {@code books} is initialized in the no-parameter constructor.
      */
     public Shelf() {
+        this(0, "");
     }
 
     /**
@@ -42,6 +43,7 @@ public class Shelf {
     public Shelf(int shelfNumber, String subject) {
         this.shelfNumber = shelfNumber;
         this.subject = subject;
+        books = new HashMap<>();
     }
 
     /**
